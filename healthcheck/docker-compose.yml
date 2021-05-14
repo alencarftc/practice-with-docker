@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: .
+      target: builder
+    depends_on:
+      nginx:
+        condition: service_healthy
+
+  nginx:
+    build:
+      context: .
+      target: server
+    image: nginx:latest
+    ports:
+      - '80:80'
+    healthcheck:
+      test: curl http://localhost || exit 1
+      interval: 5s
+      retries: 3

@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+
+  mysql:
+    image: mysql
+    networks:
+      - internal
+    environment:
+      - MYSQL_ROOT_PASSWORD=senha
+      - MYSQL_DATABASE=wordpress
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  wordpress:
+    image: wordpress
+    ports:
+      - 80:80
+    networks:
+      - internal
+    depends_on:
+      - mysql
+    environment:
+      - WORDPRESS_DB_HOST=mysql:3306
+      - WORDPRESS_DB_PASSWORD=senha
+      - WORDPRESS_DB_USER=root
+    deploy:
+      mode: replicated
+      replicas: 3
+      placement:
+        constraints: [node.role == worker]
+
+networks:
+    internal:

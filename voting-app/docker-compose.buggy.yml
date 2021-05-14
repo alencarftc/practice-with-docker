@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  vote:
+    image: lucj/whoami:2.0
+    ports:
+      - 5000:8000
+    deploy:
+      mode: replicated
+      replicas: 2
+      update_config:
+        failure_action: rollback
+        delay: 10s
+        monitor: 10s

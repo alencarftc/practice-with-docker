@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+
+  mysql:
+    name: wp-db
+    image: mysql
+    networks:
+      - internal
+    environment:
+      - MYSQL_ROOT_PASSWORD=senha
+      - MYSQL_DATABASE=wordpress
+
+  wordpress:
+    name: wp-blog
+    image: wordpress
+    ports:
+      - 80:80
+    networks:
+      - internal
+    depends_on:
+      - mysql
+    environment:
+      - WORDPRESS_DB_HOST=mysql:3306
+      - WORDPRESS_DB_PASSWORD=senha
+      - WORDPRESS_DB_USER=root
+
+networks:
+    internal:

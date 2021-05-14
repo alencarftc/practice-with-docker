@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  vote:
+    image: instavote
+    ports:
+      - 5000:80
+    deploy:
+      mode: replicated
+      replicas: 4
+      update_config:
+        parallelism: 2
+        delay: 10s
